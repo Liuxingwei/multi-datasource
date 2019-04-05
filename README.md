@@ -1,1 +1,1 @@
-# multi-datasource-druid-atomikos-mysql-sqlserver-sqlite
+# multi-datasource-atomikos-mysql-sqlserver-sqlite
