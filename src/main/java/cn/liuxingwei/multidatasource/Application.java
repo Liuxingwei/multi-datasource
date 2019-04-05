@@ -5,6 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 
+/**
+ * @author liuxingwei
+ */
 @SpringBootApplication
 @PropertySource(value = {"file:${root}/conf/${env}/application.properties", "file:${root}/conf/${env}/business.properties"})
 @EnableConfigurationProperties
