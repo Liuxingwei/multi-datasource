@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>cn.liuxingwei</groupId>
-    <artifactId>multi-datasource-druid</artifactId>
+    <artifactId>multi-datasource</artifactId>
     <version>1.0-SNAPSHOT</version>
     <description>多数据库源druid线程池管理示例</description>
 
