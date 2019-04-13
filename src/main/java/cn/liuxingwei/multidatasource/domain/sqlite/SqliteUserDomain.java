@@ -1,9 +1,9 @@
-package cn.liuxingwei.multidatasource.domain.sqlite.master;
+package cn.liuxingwei.multidatasource.domain.sqlite;
 
 import lombok.Data;
 
 @Data
-public class SqliteMasterUserDomain {
+public class SqliteUserDomain {
     private Integer userId;
     private String userName;
     private String userPassword;
