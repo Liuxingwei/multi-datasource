@@ -1,6 +1,7 @@
 package cn.liuxingwei.multidatasource.service.sqlite.activemq;
 
 import org.apache.activemq.command.ActiveMQQueue;
+import org.apache.activemq.command.ActiveMQTopic;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,6 +21,12 @@ public class ProducerTest {
     @Autowired
     private Producer producer;
 
+    @Autowired
+    private Destination queue;
+
+    @Autowired
+    private Destination topic;
+
     @Before
     public void setUp() throws Exception {
     }
@@ -30,7 +37,7 @@ public class ProducerTest {
 
     @Test
     public void sendMessage() {
-        Destination message = new ActiveMQQueue("message");
-        producer.sendMessage(message, "hello");
+        producer.sendMessage(queue, "hello");
+        producer.sendMessage(topic, "大家好！");
     }
 }
