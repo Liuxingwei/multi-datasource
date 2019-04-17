@@ -24,7 +24,7 @@
         <druid-version>1.1.15</druid-version>
         <atomikos-version>4.0.6</atomikos-version>
         <mssql-version>7.2.1.jre8</mssql-version>
-        <activemq-broker-version>5.15.9</activemq-broker-version>
+        <activemq-version>5.15.9</activemq-version>
         <spring-jms-version>5.1.6.RELEASE</spring-jms-version>
         <javax-jms-version>2.0.1</javax-jms-version>
     </properties>
@@ -81,6 +81,11 @@
             <artifactId>transactions-jdbc</artifactId>
             <version>${atomikos-version}</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.apache.activemq</groupId>-->
+<!--            <artifactId>activemq-pool</artifactId>-->
+<!--            <version>${activemq-version}</version>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -110,6 +115,17 @@
             <artifactId>powermock-api-mockito2</artifactId>
             <version>${powermock-version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq.tooling</groupId>
+            <artifactId>activemq-junit</artifactId>
+            <version>${activemq-version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.mockrunner</groupId>
+            <artifactId>mockrunner-jms</artifactId>
+            <version>2.0.1</version>
         </dependency>
     </dependencies>
 

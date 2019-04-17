@@ -6,13 +6,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class Consumer2 {
+public class QueueConsumerSecond {
     @JmsListener(destination = "message")
     public void receiveMessage(String text) {
-        log.info("Consumer2 queue：" + text);
-    }
-    @JmsListener(destination = "topic", containerFactory = "jmsListenerContainerTopic")
-    public void receiveTopic(String text) {
-        log.info("Consumer2 topic: " + text);
+        log.info("Consumer queue second：" + text);
     }
 }
