@@ -1,42 +1,32 @@
 package cn.liuxingwei.multidatasource.service.sqlite.activemq;
 
-import com.mockrunner.jms.ConfigurationManager;
-import com.mockrunner.jms.DestinationManager;
-import com.mockrunner.mock.jms.MockQueueConnectionFactory;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.annotation.Resource;
 import javax.jms.Destination;
-import javax.jms.JMSConnectionFactory;
+import javax.jms.TextMessage;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 保留这个测试类，只是为了演示通过发送消息，查看日志，来确定activemq是否正常工作。
+ * 这个不是单元测试的作用，而是集成测试的作用。
+ * 但是在实验阶段，需要这个测试来看环境是否生效，代码是否正确无误，以及对 activemq 的集成是否成功。
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Configuration
 public class ProducerTest {
 
-    @Bean
-    public DestinationManager destinationManager() {
-        return new DestinationManager();
-    }
-
-    @Bean
-    public ConfigurationManager configurationManager() {
-        return new ConfigurationManager();
-    }
-
-    @Bean
-    public MockQueueConnectionFactory jmsConnectionFactory() {
-        return new MockQueueConnectionFactory(destinationManager(), configurationManager());
-    }
+    @Resource
+    private JmsTemplate jmsTemplate;
 
     @Autowired
     private Producer producer;
@@ -60,7 +50,6 @@ public class ProducerTest {
         String queueString = "hello";
         String topicString = "大家好！";
 
-//        Mockito.verify(topicConsumerFirst, Mockito.times(1)).receiveTopic(topicString);
         producer.sendMessage(queue, queueString);
 
         producer.sendMessage(topic, topicString);
