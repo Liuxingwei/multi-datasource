@@ -48,9 +48,6 @@ public class ProducerUnitTest {
         return new MockQueueConnectionFactory(destinationManager(), configurationManager());
     }
 
-    @Autowired
-    private Destination topic;
-
     @Before
     public void setUp() throws Exception {
     }
