@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class QueueConsumerSecond {
-    @JmsListener(destination = "message")
+    @JmsListener(destination = "queue")
     public void receiveMessage(String text) {
         log.info("Consumer queue second：" + text);
     }

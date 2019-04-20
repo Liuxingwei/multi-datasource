@@ -5,6 +5,7 @@ import com.mockrunner.jms.DestinationManager;
 import com.mockrunner.mock.jms.MockQueue;
 import com.mockrunner.mock.jms.MockQueueConnectionFactory;
 import com.mockrunner.mock.jms.MockTopic;
+import com.mockrunner.mock.jms.MockTopicConnectionFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Assert;
@@ -32,19 +33,20 @@ public class ProducerUnitTest {
     @Autowired
     private Producer producer;
 
+    @Resource
+    private DestinationManager destinationManager;
+
+    @Resource
+    private ConfigurationManager configurationManager;
+
     @Bean
-    public DestinationManager destinationManager() {
-        return new DestinationManager();
+    public MockQueueConnectionFactory mockQueueConnectionFactory() {
+        return new MockQueueConnectionFactory(destinationManager, configurationManager);
     }
 
     @Bean
-    public ConfigurationManager configurationManager() {
-        return new ConfigurationManager();
-    }
-
-    @Bean
-    public MockQueueConnectionFactory jmsConnectionFactory() {
-        return new MockQueueConnectionFactory(destinationManager(), configurationManager());
+    private MockTopicConnectionFactory mockTopicConnectionFactory() {
+        return new MockTopicConnectionFactory(destinationManager, configurationManager);
     }
 
     @Before
@@ -58,10 +60,10 @@ public class ProducerUnitTest {
     @Test
     public void sendQueue() {
 
-        jmsTemplate.setConnectionFactory(jmsConnectionFactory());
+        jmsTemplate.setConnectionFactory(mockQueueConnectionFactory());
         String queueString = "hello";
 
-        MockQueue queue = destinationManager().createQueue("message");
+        MockQueue queue = destinationManager.createQueue("queue");
 
         producer.sendMessage(queue, queueString);
         String textMessage = (String) jmsTemplate.receiveAndConvert(queue);
@@ -73,11 +75,11 @@ public class ProducerUnitTest {
     @Test
     public void sendTopic() {
 
-        jmsTemplate.setConnectionFactory(jmsConnectionFactory());
+        jmsTemplate.setConnectionFactory(mockTopicConnectionFactory());
         jmsTemplate.setPubSubDomain(true);
         String topicString = "大家好！";
 
-        MockTopic topic = destinationManager().createTopic("topic");
+        MockTopic topic = destinationManager.createTopic("topic");
         producer.sendMessage(topic, topicString);
         String testTopic = (String) jmsTemplate.receiveAndConvert(topic);
         log.info("topic string: " + testTopic);
