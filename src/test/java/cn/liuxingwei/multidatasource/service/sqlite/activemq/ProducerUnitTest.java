@@ -1,9 +1,7 @@
 package cn.liuxingwei.multidatasource.service.sqlite.activemq;
 
-import cn.liuxingwei.multidatasource.client.activemq.QueueConsumerFirst;
 import com.mockrunner.jms.ConfigurationManager;
 import com.mockrunner.jms.DestinationManager;
-import com.mockrunner.mock.jms.MockDestination;
 import com.mockrunner.mock.jms.MockQueue;
 import com.mockrunner.mock.jms.MockQueueConnectionFactory;
 import com.mockrunner.mock.jms.MockTopic;
@@ -17,19 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jms.annotation.JmsListener;
-import org.springframework.jms.config.JmsListenerContainerFactory;
-import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
-import javax.annotation.Resources;
 import javax.jms.Destination;
-import javax.jms.JMSConnectionFactory;
-import javax.jms.Message;
-import javax.jms.TextMessage;
-import java.util.concurrent.TimeUnit;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -37,20 +27,11 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class ProducerUnitTest {
 
-//    @Resource
-//    private JmsMessagingTemplate jmsTemplate;
-
     @Resource
     private JmsTemplate jmsTemplate;
 
     @Autowired
-    private JmsListenerContainerFactory jmsListenerContainerTopic;
-
-    @Autowired
     private Producer producer;
-
-    @Autowired
-    private QueueConsumerFirst queueConsumerFirst;
 
     @Bean
     public DestinationManager destinationManager() {
@@ -81,9 +62,10 @@ public class ProducerUnitTest {
     @Test
     public void sendQueue() {
 
+        jmsTemplate.setConnectionFactory(jmsConnectionFactory());
         String queueString = "hello";
 
-        MockQueue queue = destinationManager().createQueue("testQueue");
+        MockQueue queue = destinationManager().createQueue("message");
 
         producer.sendMessage(queue, queueString);
         String textMessage = (String) jmsTemplate.receiveAndConvert(queue);
@@ -95,14 +77,13 @@ public class ProducerUnitTest {
     @Test
     public void sendTopic() {
 
+        jmsTemplate.setConnectionFactory(jmsConnectionFactory());
         jmsTemplate.setPubSubDomain(true);
-
         String topicString = "大家好！";
 
-        MockTopic topic = destinationManager().createTopic("testTopic");
-
+        MockTopic topic = destinationManager().createTopic("topic");
+        jmsTemplate.setDefaultDestination(topic);
         producer.sendMessage(topic, topicString);
-
         String testTopic = (String) jmsTemplate.receiveAndConvert(topic);
         log.info("topic string: " + testTopic);
         Assert.assertEquals(topicString, testTopic);
