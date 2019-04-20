@@ -79,7 +79,6 @@ public class ProducerUnitTest {
         String topicString = "大家好！";
 
         MockTopic topic = destinationManager().createTopic("topic");
-        jmsTemplate.setDefaultDestination(topic);
         producer.sendMessage(topic, topicString);
         String testTopic = (String) jmsTemplate.receiveAndConvert(topic);
         log.info("topic string: " + testTopic);
