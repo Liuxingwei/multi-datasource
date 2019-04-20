@@ -19,7 +19,6 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
-import javax.jms.Destination;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
