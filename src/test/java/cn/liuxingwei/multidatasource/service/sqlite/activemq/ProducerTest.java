@@ -1,18 +1,15 @@
 package cn.liuxingwei.multidatasource.service.sqlite.activemq;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import javax.jms.Destination;
-import javax.jms.TextMessage;
 
 import java.util.concurrent.TimeUnit;
 
@@ -28,13 +25,13 @@ public class ProducerTest {
     @Resource
     private JmsTemplate jmsTemplate;
 
-    @Autowired
+    @Resource
     private Producer producer;
 
-    @Autowired
+    @Resource
     private Destination queue;
 
-    @Autowired
+    @Resource
     private Destination topic;
 
     @Before
