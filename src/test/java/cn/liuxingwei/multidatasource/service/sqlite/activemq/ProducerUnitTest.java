@@ -1,5 +1,6 @@
 package cn.liuxingwei.multidatasource.service.sqlite.activemq;
 
+import cn.liuxingwei.multidatasource.config.TestActivemqConfiguration;
 import com.mockrunner.jms.ConfigurationManager;
 import com.mockrunner.jms.DestinationManager;
 import com.mockrunner.mock.jms.MockQueue;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -23,7 +25,7 @@ import javax.annotation.Resource;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Configuration
+@Import({TestActivemqConfiguration.class})
 @Slf4j
 public class ProducerUnitTest {
 
@@ -39,18 +41,14 @@ public class ProducerUnitTest {
     @Resource
     private ConfigurationManager configurationManager;
 
-    @Bean
-    public MockQueueConnectionFactory mockQueueConnectionFactory() {
-        return new MockQueueConnectionFactory(destinationManager, configurationManager);
-    }
+    private MockQueueConnectionFactory mockQueueConnectionFactory;
 
-    @Bean
-    private MockTopicConnectionFactory mockTopicConnectionFactory() {
-        return new MockTopicConnectionFactory(destinationManager, configurationManager);
-    }
+    private MockTopicConnectionFactory mockTopicConnectionFactory;
 
     @Before
     public void setUp() throws Exception {
+        mockQueueConnectionFactory = new MockQueueConnectionFactory(destinationManager, configurationManager);
+        mockTopicConnectionFactory = new MockTopicConnectionFactory(destinationManager, configurationManager);
     }
 
     @After
@@ -60,7 +58,7 @@ public class ProducerUnitTest {
     @Test
     public void sendQueue() {
 
-        jmsTemplate.setConnectionFactory(mockQueueConnectionFactory());
+        jmsTemplate.setConnectionFactory(mockQueueConnectionFactory);
         String queueString = "hello";
 
         MockQueue queue = destinationManager.createQueue("queue");
@@ -75,7 +73,7 @@ public class ProducerUnitTest {
     @Test
     public void sendTopic() {
 
-        jmsTemplate.setConnectionFactory(mockTopicConnectionFactory());
+        jmsTemplate.setConnectionFactory(mockTopicConnectionFactory);
         jmsTemplate.setPubSubDomain(true);
         String topicString = "大家好！";
 
